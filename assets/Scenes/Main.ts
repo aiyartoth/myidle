@@ -1,16 +1,16 @@
-import { _decorator, Component, log } from "cc";
-import type { AttrId } from "./types/types";
-import type { GameState } from "./types/save";
-import { ItemManager } from "./Controller/ItemManager";
-import { InventoryManager } from "./Controller/InventoryManager";
-import { EquipmentManager } from "./Controller/EquipmentManager";
-import { AttributeManager } from "./Controller/AttributeManager";
-import { SaveManager } from "./Controller/SaveManager";
+import { _decorator, Component, Label, find, log } from "cc";
+import type { AttrId } from "../types/types";
+import type { GameState } from "../types/save";
+import { ItemManager } from "../Controller/ItemManager";
+import { InventoryManager } from "../Controller/InventoryManager";
+import { EquipmentManager } from "../Controller/EquipmentManager";
+import { AttributeManager } from "../Controller/AttributeManager";
+import { SaveManager } from "../Controller/SaveManager";
 import {
   getItemTemplateMap,
   getEquipmentTemplateMap,
   generateDefaultState,
-} from "./Controller/DefaultSaveGenerator";
+} from "../Controller/DefaultSaveGenerator";
 
 const { ccclass } = _decorator;
 
@@ -42,6 +42,15 @@ export class Main extends Component {
     this.logGameState();
 
     log("[Main] 游戏初始化完成！");
+    // const PlayerLabel = find("UICanvas/Layout/Label");
+    const PlayerLabel = find("UICanvas/Layout/playerLabel");
+    if (PlayerLabel) {
+      // __comps__.1.string
+      log(PlayerLabel.getComponent(Label).string);
+      // PlayerLabel.getComponent(Label).string = "玩家";
+    }else{
+      log("PlayerLabel not found");
+    }
   }
 
   /**
@@ -242,6 +251,15 @@ export class Main extends Component {
     }
     log("[Main] ✗ 存档导入失败");
     return false;
+  }
+
+  renderAttribute(): void {
+    const equipped = this.equipmentManager.getEquipped();
+    const logEntries: string[] = [];
+
+    logEntries.push("[Main] ========== 当前游戏状态 ==========");
+    
+    
   }
 
   // 公共访问器（供其他组件使用）
